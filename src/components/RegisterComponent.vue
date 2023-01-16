@@ -57,7 +57,7 @@ export default {
   }),
   methods: {
     async verifyRegister(){
-      if(this.user.email !== "" && this.user.password !== "" && this.user.terms_and_conditions === true && this.confirmPassword !== "") {
+      if(this.user.email !== "" && this.user.password !== "" && this.user.terms_and_conditions === true && this.confirmPassword !== "" && this.user.password.length >= 6) {
         if (this.user.password === this.confirmPassword) {
           await store.dispatch('register', this.user)
             createLocalStorageVariable('token', _.get(await store.getters.getToken, 'message'))
@@ -69,7 +69,7 @@ export default {
         }
       } else {
         this.errorBool = true
-        this.error = "Veuillez remplir tout les champs et accepter la CGU"
+        this.error = "Veuillez remplir correctement tout les champs et accepter la CGU"
         setTimeout(() => {this.errorBool = false}, 2000)
 
       }

@@ -6,6 +6,8 @@ export const store = createStore({
         token: {},
         tasks: [],
         list: {},
+        email: false,
+        code:false
     },
     mutations: {
         setTodos(state, todos) {
@@ -19,6 +21,12 @@ export const store = createStore({
         },
         setList(state, list) {
             state.list = list
+        },
+        setEmail(state, email) {
+            state.email = email
+        },
+        setCode(state, code) {
+            state.code = code
         }
     },
     getters: {
@@ -33,6 +41,12 @@ export const store = createStore({
         },
         getList(state) {
             return state.list
+        },
+        getEmail(state) {
+            return state.email
+        },
+        getCode(state) {
+            return state.code
         }
     },
     actions: {
@@ -139,6 +153,40 @@ export const store = createStore({
                 },
                 body : JSON.stringify({'title': obj.title}),
                 method: 'PUT'
+            })
+        },
+        sendEmail(context, user) {
+            return fetch(`http://localhost:7000/api/v1/users/forgetPassword`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body : JSON.stringify(user),
+                method: 'POST'
+            }).then(
+                response => context.commit('setEmail', response.json())
+            )
+        },
+        sendCode(context, user) {
+            return fetch(`http://localhost:7000/api/v1/users/code`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body : JSON.stringify(user),
+                method: 'POST'
+            }).then(
+                response => context.commit('setCode', response.json())
+            )
+        },
+        changePassword(context, user) {
+            return fetch(`http://localhost:7000/api/v1/users/changePassword`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+                body : JSON.stringify(user),
+                method: 'POST'
             })
         },
     }
